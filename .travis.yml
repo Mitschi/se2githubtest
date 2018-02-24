@@ -4,7 +4,6 @@ android:
   components:
     - tools
     - platform-tools
-    - tools
 
     # The BuildTools version used by your project
     - build-tools-25.0.2
@@ -24,7 +23,7 @@ android:
 # Emulator Management: Create, Start and Wait
 script:
   - echo y | $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-25;google_apis;armeabi-v7a"
-  - echo y | $ANDROID_HOME/tools/bin/sdkmanager --update
+#  - echo y | $ANDROID_HOME/tools/bin/sdkmanager --update
 #  - echo y | android update sdk --no-ui --all --filter sys-img-armeabi-v7a-android-25
   - echo no | $ANDROID_HOME/tools/bin/avdmanager create avd --force -n test  -k "system-images;android-25;google_apis;armeabi-v7a"
   - emulator -avd test -no-skin -no-audio -no-window &
