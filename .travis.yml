@@ -1,97 +1,61 @@
 language: android
 jdk: oraclejdk8
-sudo: required
-dist: precise
+sudo: false
+env:
+  global:
+    - ANDROID_API=24
+    - ANDROID_BUILD_TOOLS=26.0.2
+    - ADB_INSTALL_TIMEOUT=5 # minutes
 android:
   components:
+    # Uncomment the lines below if you want to
+    # use the latest revision of Android SDK Tools
     - tools
     - platform-tools
     - tools
+    # Note that the tools section appears twice on purpose
+    # as it’s required to get the newest Android SDK tools.
 
     # The BuildTools version used by your project
-    - build-tools-25.0.2
+    - build-tools-$ANDROID_BUILD_TOOLS
 
     # The SDK version used to compile your project
-    - android-25
+    - android-$ANDROID_API
 
+    # Additional components
     - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
-    - addon-google_apis-google-25
+    - addon-google_apis-google-26
 
-    - sys-img-armeabi-v7a-android-25
+    # Specify at least one system image,
+    # if you need to run emulator(s) during your tests
+    - arm64-v8a-$ANDROID_API
   licenses:
-    - 'android-sdk-license-.+'
+      - 'android-sdk-preview-license-52d11cd2'
+      - 'android-sdk-license-.+'
+      - 'google-gdk-license-.+'
 
 # Emulator Management: Create, Start and Wait
-script:
-  - echo y | $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-25;google_apis;armeabi-v7a"
-  - echo y | $ANDROID_HOME/tools/bin/sdkmanager --update
-#  - echo y | android update sdk --no-ui --all --filter sys-img-armeabi-v7a-android-25
-  - echo no | $ANDROID_HOME/tools/bin/avdmanager create avd --force -n test  -k "system-images;android-25;google_apis;armeabi-v7a"
-  - emulator -avd test -no-skin -no-audio -no-window &
+before_script:
+  - echo yes | $ANDROID_HOME/tools/bin/sdkmanager --update
+  - echo yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+  - echo yes | $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-24;default;arm64-v8a"
+  - echo no | $ANDROID_HOME/tools/bin/avdmanager create avd --force -n test  -k "system-images;android-24;default;arm64-v8a"
+  - $ANDROID_HOME/tools/emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
-  - ./gradlew connectedCheck
+
+script: ./gradlew test
 
 before_cache:
-  -rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
-  -rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    -$HOME/.gradle/caches/
-    -$HOME/.gradle/wrapper/
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
+
 notifications:
   email: false
-
-#language: android
-#jdk: oraclejdk7
-#cache:
-#  directories:
-#   - node_modules
-#sudo: false
-#
-#android:
-#  components:
-#     # The BuildTools version used by your project
-#     - build-tools-26.0.2
-#
-#     # The SDK version used to compile your project
-#     - android-26
-#
-#     # Additional components
-#     - extra-google-google_play_services
-#     - extra-google-m2repository
-#     - extra-android-m2repository
-#     - addon-google_apis-google-26
-#
-#     # Specify at least one system image,
-#     # if you need to run emulator(s) during your tests
-#     - armeabi-v7a-android-26
-#
-#  licenses:
-#    - 'android-sdk-license-.+'
-#
-#env:
-#  global:
-#   # install timeout in minutes (2 minutes by default)
-#    - ADB_INSTALL_TIMEOUT=8
-#
-## Emulator Management: Create, Start and Wait
-#script:
-#  - echo no | android create avd --force -n test -t android-26 --abi armeabi-v7a
-#  - emulator -avd test -no-skin -no-audio -no-window &
-#  - android-wait-for-emulator
-#  - adb shell input keyevent 82 &
-#
-#before_cache:
-#  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-#  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-#cache:
-#  directories:
-#    - $HOME/.gradle/caches/
-#    - $HOME/.gradle/wrapper/
-#    - $HOME/.android/build-cache
-#
-#notifications:
-#  email: false
