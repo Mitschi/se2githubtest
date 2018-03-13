@@ -46,7 +46,15 @@ before_script:
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
 
-script: ./gradlew test
+script:
+    - sonar-scanner
+    - ./gradlew test
+
+addons:
+  sonarcloud:
+    organization: "se2test" # the key of the org you chose at step #3
+    token:
+      secure: 4b31f5b4566f64d5197ef943d2f13892a5a42091 # encrypted value of your token
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
