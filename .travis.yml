@@ -55,7 +55,7 @@ addons:
   sonarcloud:
     organization: "se2test" # the key of the org you chose at step #3
     token:
-      secure: "SONAR_TOKEN"
+      secure: $SONAR_TOKEN
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
