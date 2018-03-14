@@ -1,6 +1,7 @@
 language: android
 jdk: oraclejdk8
 sudo: false
+dist: trusty
 env:
   global:
     - ANDROID_API=24
@@ -54,7 +55,7 @@ addons:
   sonarcloud:
     organization: "se2test" # the key of the org you chose at step #3
     token:
-      secure: 4b31f5b4566f64d5197ef943d2f13892a5a42091 # encrypted value of your token
+      secure: "KWqu8ZobhVxArrrA5thuHIv3yU8qCMY/Tto9IeS9XXsAEZKXcgB189//oE1dEmYkMKanLPb/1K+DkmS8kklIgowur2QxmakPhxAX+TQyOYr0Yjw2fZJnCZDf+izmFmR+XBPp/rC27efc8fLxIhKvSq0rh7OWQHKAJ6evPiYtet4Y373NCGmBuUcMzfhHgS6AVyZDZ28v2GNuIrpYhLc33TfE80lj6NcAebArtLXfP21hqObeEmQp3W8l5g1rOOzM2x5nyda7SryTSOLbm58ZCxM3EH1ZN0NL+hFUOD6sIrOoYc/D6pH75L3M+HcE4Rj4dsWRQM40sIEphzew1YfqpzLzI4HVmDiWGmvWOUyt5O5P0SZgfDCXzXXnkq6AbG+0z55r4SgkPAri41NnqFNVT2HeSFtTdeZgWRueHkhE6I31xt/9PeqipvI1du7R9RIuuqUKBw8gh9qK6NgdewwslYl0uJ0FXxd7eANtw7aKdYHO7Ssdmfz0u3k4k8SZpVU/0aLrNnGF9qhkzSf/GnFBKc652h7xoz+ii3h7X+DvfjDJIbHX1dhkUmTCPqxRFjEZXoUlDK5/lF1v0pop7Q44E2zQyifcU4pkRHfSng6aLuQVaEg8KEU4ugQSypBQJGK1lVfKWKxnIt4ET+yjd0YTvAJr4l++KbXAksGRMlfE850="
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
