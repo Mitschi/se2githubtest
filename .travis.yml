@@ -35,10 +35,12 @@ android:
 before_script:
   - android-update-sdk --components=sys-img-$ANDROID_ABI-$ANDROID_API --accept-licenses='android-sdk-license-[0-9a-f]{8}'
   #- echo no | android create avd --force -n test -t $ANDROID_API --abi $ANDROID_ABI
-  - echo no | $ANDROID_HOME/tools/bin/avdmanager create avd --force -n test  -k "system-images;$ANDROID_API;default;$ANDROID_ABI"
+  - echo no | avdmanager create avd --force -n test  -k "system-images;$ANDROID_API;default;$ANDROID_ABI"
   - emulator -avd test -no-audio -no-window
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
+
+  #$ANDROID_HOME/tools/bin/
 
 
 
